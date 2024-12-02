@@ -6,12 +6,12 @@ import (
 	"os"
 	"strconv"
 	"strings"
-  "time"
+	"time"
 )
 
 func main() {
 
-  start := time.Now()
+	start := time.Now()
 
 	file, err := os.Open("input.txt")
 	if err != nil {
@@ -28,17 +28,17 @@ func main() {
 		parts := strings.Fields(line)
 
 		if isSequenceSafe(parts) {
-      //fmt.Println("Result is safe:", parts)
+			//fmt.Println("Result is safe:", parts)
 			safeCount++
 		} else {
 			//fmt.Println("Result is not safe:", parts)
 		}
 	}
 
-  elapsed := time.Since(start)
+	elapsed := time.Since(start)
 
 	fmt.Println("Total safe sequences:", safeCount)
-  fmt.Println("Took:", elapsed)
+	fmt.Println("Took:", elapsed)
 }
 
 func isSequenceSafe(parts []string) bool {
@@ -56,26 +56,26 @@ func isSequenceSafe(parts []string) bool {
 		numbers[i] = num
 	}
 
-  badLevelUsed := false
+	badLevelUsed := false
 	isIncreasing := numbers[1] > numbers[0]
 	for i := 1; i < len(numbers); i++ {
 		diff := numbers[i] - numbers[i-1]
 		absDiff := abs(diff)
 
 		if absDiff < 1 || absDiff > 3 {
-      if (badLevelUsed) {
-        return false
-      } else {
-        badLevelUsed = true
-      }
+			if badLevelUsed {
+				return false
+			} else {
+				badLevelUsed = true
+			}
 		}
 
 		if (isIncreasing && diff < 0) || (!isIncreasing && diff > 0) {
-			if (badLevelUsed) {
-        return false
-      } else {
-        badLevelUsed = true
-      }
+			if badLevelUsed {
+				return false
+			} else {
+				badLevelUsed = true
+			}
 		}
 	}
 
@@ -88,4 +88,3 @@ func abs(num int) int {
 	}
 	return num
 }
-

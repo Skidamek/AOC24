@@ -6,14 +6,14 @@ import (
 	"os"
 	"strconv"
 	"strings"
-  "time"
+	"time"
 )
 
 func main() {
-	
-  start := time.Now()
 
-  file, err := os.Open("input.txt")
+	start := time.Now()
+
+	file, err := os.Open("input.txt")
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return
@@ -35,10 +35,10 @@ func main() {
 		}
 	}
 
-  elapsed := time.Since(start)
+	elapsed := time.Since(start)
 
 	fmt.Println("Total safe sequences:", safeCount)
-  fmt.Println("Took:", elapsed)
+	fmt.Println("Took:", elapsed)
 }
 
 func isSequenceSafe(parts []string) bool {
@@ -79,4 +79,3 @@ func abs(num int) int {
 	}
 	return num
 }
-
