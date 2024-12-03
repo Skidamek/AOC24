@@ -1,4 +1,7 @@
 import re
+import time
+
+start_time = time.time()
 
 with open("input.txt") as file:
     text = "".join(line.strip() for line in file)
@@ -15,4 +18,6 @@ for match in matchedParts:
 
     total_sum += result
 
-print(total_sum)
+elapsed_time = (time.time() - start_time) * 1_000_000
+print("Total sum:", total_sum)
+print(f"Took: {elapsed_time:.3f}µs")
