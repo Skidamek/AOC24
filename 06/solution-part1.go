@@ -53,6 +53,7 @@ func main() {
 	block := '#'
 	currentDirection := '^'
 	uniquePositions := make([][]int, 0)
+	uniquePositions = append(uniquePositions, []int{guardX, guardY})
 
 	// path finding while gouard is inside the grid
 	for guardX >= 0 && guardX < len(lines[0]) && guardY >= 0 && guardY < len(lines) {
@@ -111,6 +112,5 @@ func main() {
 	elapsed := time.Since(start)
 
 	fmt.Println("Unique positions:", len(uniquePositions))
-	fmt.Println("If doesnt work add one to the result to get the correct answer") // yes
 	fmt.Println("Took:", elapsed)
 }
