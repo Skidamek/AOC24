@@ -56,6 +56,7 @@ func main() {
 	guardY := rootGuardY
 	loopsMap := make(map[string]struct{}) // maps in go have O(1) lookup time while slices (lists) have O(n)
 	loops := make([][]int, 0)
+	blocks := make(map[string]struct{})
 
 	// path finding while gouard is inside the grid
 	for guardX >= 0 && guardX < len(lines[0]) && guardY >= 0 && guardY < len(lines) {
@@ -84,6 +85,9 @@ func main() {
 
 		// check if next step is blocked
 		if lines[nextY][nextX] == block {
+			positionKey := fmt.Sprintf("%d,%d,%c", nextX, nextY, currentDirection)
+			blocks[positionKey] = struct{}{}
+
 			// turn right
 			if currentDirection == '^' {
 				currentDirection = '>'
@@ -95,18 +99,19 @@ func main() {
 				currentDirection = '^'
 			}
 		} else {
-			guardX = nextX
-			guardY = nextY
 
-			key := fmt.Sprintf("%d,%d", guardX, guardY)
+			key := fmt.Sprintf("%d,%d", nextX, nextY)
 
 			if _, exists := loopsMap[key]; !exists {
-				if isLooped(rootGuardX, rootGuardY, lines, guardX, guardY) {
-					loops = append(loops, []int{guardX, guardY})
+				if isLooped(guardX, guardY, currentDirection, lines, nextX, nextY) {
+					loops = append(loops, []int{nextX, nextY})
 				}
 			}
 
 			loopsMap[key] = struct{}{}
+
+			guardX = nextX
+			guardY = nextY
 		}
 	}
 
@@ -139,11 +144,10 @@ func printGrid(lines [][]rune, loops [][]int) {
 	}
 }
 
-func isLooped(guardX, guardY int, lines [][]rune, blockX, blockY int) bool {
+func isLooped(guardX, guardY int, currentDirection rune, lines [][]rune, blockX, blockY int) bool {
 
 	block := '#'
-	currentDirection := '^'
-	visited := make(map[string]struct{})
+	blocks := make(map[string]struct{})
 
 	for guardX >= 0 && guardX < len(lines[0]) && guardY >= 0 && guardY < len(lines) {
 		// if somethign is blocking the way turn 90 degrees right
@@ -174,11 +178,11 @@ func isLooped(guardX, guardY int, lines [][]rune, blockX, blockY int) bool {
 
 			positionKey := fmt.Sprintf("%d,%d,%c", nextX, nextY, currentDirection)
 
-			if _, exists := visited[positionKey]; exists {
+			if _, exists := blocks[positionKey]; exists {
 				return true // we found it!
 			}
 
-			visited[positionKey] = struct{}{}
+			blocks[positionKey] = struct{}{}
 
 			// turn right
 			if currentDirection == '^' {
